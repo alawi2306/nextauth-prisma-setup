@@ -1,64 +1,44 @@
-import { auth, signOut } from '@/auth';
-import Link from 'next/link';
+import MobileNav from "./mobile-nav";
+const navigation = [
+  { name: "Solutions", href: "#" },
+  { name: "Features", href: "#" },
+  { name: "Resources", href: "#" },
+  { name: "Contact Us", href: "#" },
+];
 
-const Header = async () => {
-  const session = await auth();
-  const user = session?.user;
-
-  const logoutAction = async () => {
-    'use server';
-    await signOut();
-  };
-
+export default function Header() {
   return (
-    <header className='bg-white h-20'>
-      <nav className='h-full flex justify-between container items-center'>
-        <div>
-          <Link href='/' className='text-ct-dark-600 text-2xl font-semibold'>
-            CodevoWeb
-          </Link>
+    <header className="absolute inset-x-0 top-0 z-50">
+      <nav
+        aria-label="Global"
+        className="flex items-center justify-between p-6 lg:px-8"
+      >
+        <div className="inline-flex">
+          <a href="#" className="-m-1.5 p-1.5">
+            <span className="sr-only">Medical SaaS</span>
+            <img
+              alt="Medical SaaS Logo"
+              src="/path-to-your-logo.svg" // Replace with your logo path
+              className="h-8 w-auto"
+            />
+          </a>
         </div>
-        <ul className='flex items-center space-x-4'>
-          <li>
-            <Link href='/' className='text-ct-dark-600'>
-              Home
-            </Link>
-          </li>
-          {!user && (
-            <>
-              <li>
-                <Link href='/register' className='text-ct-dark-600'>
-                  Register
-                </Link>
-              </li>
-              <li>
-                <Link href='/login' className='text-ct-dark-600'>
-                  Login
-                </Link>
-              </li>
-            </>
-          )}
-          {user && (
-            <form action={logoutAction} className='flex'>
-              <li>
-                <Link href='/client-side' className='text-ct-dark-600'>
-                  Client
-                </Link>
-              </li>
-              <li className='ml-4'>
-                <Link href='/profile' className='text-ct-dark-600'>
-                  Profile
-                </Link>
-              </li>
-              <li className='ml-4'>
-                <button>Logout</button>
-              </li>
-            </form>
-          )}
-        </ul>
+        <div className="hidden lg:flex lg:gap-x-12">
+          {navigation.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              {item.name}
+            </a>
+          ))}
+              <a href="/login">
+                Login   
+              </a>
+        </div>
       </nav>
+      <MobileNav />
     </header>
   );
-};
-
-export default Header;
+}
